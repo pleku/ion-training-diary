@@ -1,0 +1,8 @@
+.classpath
+.project
+.settings
+target/
+widgetsets/
+*.launch
+gwt-unitCache/
+rebel.xml
