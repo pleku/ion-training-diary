@@ -1,11 +1,11 @@
 package org.vaadin.ion.diary;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
@@ -19,13 +19,11 @@ public class DiaryMobileUI extends UI {
     protected void init(VaadinRequest request) {
         setContent(new CssLayout());
         final CssLayout cssLayout = new CssLayout();
-        Button button = new Button("Click Me");
-        button.addClickListener(new ClickListener() {
-            public void buttonClick(ClickEvent event) {
-                cssLayout.addComponent(new Label("Thank you for clicking"));
-            }
-        });
-        cssLayout.addComponent(button);
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        for (Entry<String, String[]> entry : parameterMap.entrySet()) {
+            cssLayout.addComponent(new Label(entry.getKey() + " "
+                    + Arrays.toString(entry.getValue())));
+        }
         setContent(cssLayout);
     }
 
