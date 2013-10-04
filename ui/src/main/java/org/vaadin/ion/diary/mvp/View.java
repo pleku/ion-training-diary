@@ -1,0 +1,9 @@
+package org.vaadin.ion.diary.mvp;
+
+import java.io.Serializable;
+
+public interface View<P extends Presenter<P, V>, V extends View<P, V>> extends
+		Serializable {
+
+	public P getPresenter();
+}
