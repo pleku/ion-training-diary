@@ -17,7 +17,7 @@ public class DiaryDesktopUI extends UI {
     @Override
     protected void init(VaadinRequest request) {
         setContent(new Label(
-                "This app is only designed for mobile webkit based devices"));
+                "This app is only designed for desktop webkit based devices"));
 
     }
 

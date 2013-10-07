@@ -123,7 +123,7 @@ public class ContextDeployer implements ServletContextListener {
 				Class<?> servletClass = context.getClassLoader().loadClass(
 						servletClassName);
 
-				if (VaadinServlet.class.isAssignableFrom(servletClass)) {
+				if (CDIServlet.class.isAssignableFrom(servletClass)) {
 					return true;
 				}
 
@@ -294,7 +294,7 @@ public class ContextDeployer implements ServletContextListener {
 	private void registerServletToContext(ServletContext context) {
 		getLogger().info("Registering VaadinServlet with CDIUIProvider");
 
-		VaadinServlet vaadinServlet = new VaadinServlet();
+		VaadinServlet vaadinServlet = new CDIServlet();
 
 		ServletRegistration.Dynamic registration = context.addServlet(
 				"VaadinServlet", vaadinServlet);
