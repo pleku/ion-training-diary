@@ -7,7 +7,6 @@ import com.vaadin.server.ServiceException;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinServletService;
 import com.vaadin.server.communication.PushRequestHandler;
-import com.vaadin.server.communication.ServletBootstrapHandler;
 
 
 public class CDIVaadinServletService extends VaadinServletService {
@@ -26,7 +25,8 @@ public class CDIVaadinServletService extends VaadinServletService {
 	protected List<RequestHandler> createRequestHandlers()
 			throws ServiceException {
 		List<RequestHandler> handlers = super.createRequestHandlers();
-        handlers.add(0, new ServletBootstrapHandler());
+		handlers.remove(0);
+        handlers.add(0, new CDIBootstrapHandler());
         handlers.add(new CDIServletUIInitHandler());
         if (atmosphereAvailable) {
             handlers.add(new PushRequestHandler(this));

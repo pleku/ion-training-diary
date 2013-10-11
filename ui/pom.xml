@@ -62,6 +62,18 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<!-- Needed for possible offline mode -->
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-client-compiled</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
+		<dependency>
+			<!-- Needed for possible offline mode -->
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-themes</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
+		<dependency>
 			<!-- TODO check if this is really needed ?? In add-on project it is needed 
 				for linker -->
 			<groupId>com.vaadin</groupId>

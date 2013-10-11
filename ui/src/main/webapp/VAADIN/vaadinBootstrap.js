@@ -191,19 +191,21 @@
 				
 				if(getConfig("theme") === undefined) {
 					if(mayDefer) {
-						var themeUri = vaadinDir + 'themes/' + getConfig('theme');
-						loadTheme(themeUri);
-						
-						var widgetset = getConfig('widgetset');
-						var widgetsetUrl = getConfig('widgetsetUrl');
-						if (!widgetsetUrl) {
-							widgetsetUrl = vaadinDir + 'widgetsets/' + widgetset + "/" + widgetset + ".nocache.js?" + new Date().getTime();
-						}
-						loadWidgetset(widgetsetUrl, widgetset);
+						fetchRootConfig();						
 					} else {
 						throw "May not defer bootstrap any more";
 					}
-				} 
+				} else {
+					var themeUri = vaadinDir + 'themes/' + getConfig('theme');
+					loadTheme(themeUri);
+					
+					var widgetset = getConfig('widgetset');
+					var widgetsetUrl = getConfig('widgetsetUrl');
+					if (!widgetsetUrl) {
+						widgetsetUrl = vaadinDir + 'widgetsets/' + widgetset + "/" + widgetset + ".nocache.js?" + new Date().getTime();
+					}
+					loadWidgetset(widgetsetUrl, widgetset);
+				}
 				
 				if (getConfig('uidl') === undefined) {
 					if (mayDefer) {

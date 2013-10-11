@@ -46,7 +46,7 @@ public class CDIUIProvider extends DefaultUIProvider implements Serializable {
 
 			@Override
 			public UIType solveUIType(VaadinRequest request) {
-				if (getScreenSize(request) < 600) {
+				if (getScreenSize(request) < 800) {
 					Logger.getAnonymousLogger().log(Level.INFO,
 							"Phone UI, screen size " + getScreenSize(request));
 					return UIType.PHONE;

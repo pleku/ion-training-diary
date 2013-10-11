@@ -3,6 +3,9 @@ package com.vaadin.cdi;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -61,7 +64,8 @@ public class CDIServletUIInitHandler extends ServletUIInitHandler {
 		return commitJsonResponse(request, response, stringWriter.toString());
 	}
 
-	private UI getBrowserDetailsUI(VaadinRequest request, VaadinSession session, JSONObject params) {
+	private UI getBrowserDetailsUI(VaadinRequest request,
+			VaadinSession session, JSONObject params) {
 		VaadinService vaadinService = request.getService();
 
 		List<UIProvider> uiProviders = session.getUIProviders();
@@ -94,7 +98,6 @@ public class CDIServletUIInitHandler extends ServletUIInitHandler {
 		if (provider == null || uiClass == null) {
 			return null;
 		}
-		
 
 		// Check for an existing UI based on window.name
 
@@ -131,9 +134,12 @@ public class CDIServletUIInitHandler extends ServletUIInitHandler {
 		// unexpected
 		UICreateEvent event = new UICreateEvent(request, uiClass, uiId);
 		UI ui = uiClass.cast(provider.createInstance(event));
+
+		String widgetset = getWidgetset(provider, event);
+		String theme = getTheme(provider, event);
 		try {
-			params.append("theme", provider.getTheme(event));
-			params.append("widgetset", provider.getTheme(event));
+			params.put("theme", theme);
+			params.put("widgetset", widgetset);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -179,6 +185,51 @@ public class CDIServletUIInitHandler extends ServletUIInitHandler {
 		return ui;
 	}
 
+	/** this method was added **/
+	private String getWidgetset(UIProvider provider, UICreateEvent event) {
+		String widgetset = provider.getWidgetset(event);
+		if (widgetset == null) {
+			widgetset = event.getRequest().getService()
+					.getConfiguredWidgetset(event.getRequest());
+		}
+
+		widgetset = stripSpecialChars(widgetset);
+		return widgetset;
+	}
+
+	/** this method was added **/
+	private String getTheme(UIProvider provider, UICreateEvent event) {
+		String themeName = provider.getTheme(event);
+		if (themeName == null) {
+			themeName = event.getRequest().getService()
+					.getConfiguredTheme(event.getRequest());
+		}
+
+		// XSS preventation, theme names shouldn't contain special chars anyway.
+		// The servlet denies them via url parameter.
+		themeName = stripSpecialChars(themeName);
+
+		return themeName;
+	}
+
+	/** this method was added **/
+	protected static String stripSpecialChars(String themeName) {
+		StringBuilder sb = new StringBuilder();
+		char[] charArray = themeName.toCharArray();
+		for (int i = 0; i < charArray.length; i++) {
+			char c = charArray[i];
+			if (!CHAR_BLACKLIST.contains(c)) {
+				sb.append(c);
+			}
+		}
+		return sb.toString();
+	}
+
+	/** this was added **/
+	private static final Collection<Character> CHAR_BLACKLIST = new HashSet<Character>(
+			Arrays.asList(new Character[] { '&', '"', '\'', '<', '>', '(', ')',
+					';' }));
+
 	private void reinitUI(UI ui, VaadinRequest request) {
 		UI.setCurrent(ui);
 
@@ -217,4 +268,5 @@ public class CDIServletUIInitHandler extends ServletUIInitHandler {
 
 		return true;
 	}
+
 }

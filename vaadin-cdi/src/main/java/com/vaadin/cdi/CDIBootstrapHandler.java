@@ -8,6 +8,7 @@ import com.vaadin.server.communication.ServletBootstrapHandler;
 
 public class CDIBootstrapHandler extends ServletBootstrapHandler {
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected JSONObject getApplicationParameters(BootstrapContext context)
 			throws JSONException, PaintException {
