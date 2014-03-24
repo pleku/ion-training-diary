@@ -4,10 +4,16 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.inject.Inject;
+
+import org.vaadin.ion.diary.views.AddWorkoutView;
+
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.cdi.CDIUI;
+import com.vaadin.cdi.PhoneQualifier;
 import com.vaadin.cdi.PhoneUI;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
@@ -19,6 +25,11 @@ import com.vaadin.ui.UI;
 @CDIUI
 @Widgetset("org.vaadin.ion.diary.gwt.AppWidgetSet")
 public class DiaryMobileUI extends UI {
+
+    @Inject
+    @PhoneQualifier
+    private AddWorkoutView view;
+
     @Override
     protected void init(VaadinRequest request) {
         setContent(new CssLayout());
@@ -28,6 +39,7 @@ public class DiaryMobileUI extends UI {
             cssLayout.addComponent(new Label(entry.getKey() + " "
                     + Arrays.toString(entry.getValue())));
         }
+        cssLayout.addComponent((Component) view);
         setContent(cssLayout);
     }
 
